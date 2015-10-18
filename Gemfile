@@ -59,4 +59,8 @@ group :development, :test do
   gem 'capistrano3-puma', require: false
 end
 
+group :development do
+    gem 'rvm-capistrano'
+end
+
 gem 'puma'
