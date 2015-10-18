@@ -9,4 +9,5 @@ class User < ActiveRecord::Base
     validates :password, length: { minimum: 6}
     has_many :datasets, dependent: :destroy
     has_many :algorithms, dependent: :destroy
+    #has_many :results, dependent: :destroy
 end

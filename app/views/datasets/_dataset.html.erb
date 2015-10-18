@@ -1,12 +1,14 @@
 <div class="row dataset_listing" id="dataset-<%= dataset.id %>">
     <div class="col-md-4">
-        <%= image_tag("ExampleImage.jpg", alt: "Dataset #{dataset.id} thumbnail", class: "img-responsive image_thumbnail") %>
+        <%= image_tag("/uploads/dataset/#{dataset.user_id}/#{dataset.id}/#{dataset.thumbnail}", alt: "Dataset #{dataset.id} thumbnail", class: "img-responsive image_thumbnail") %>
     </div>
     <div class="col-md-8">
-        <h3><%= dataset.name %></h3>
+        <h3><%= link_to(dataset.name, dataset) %></h3>
         <p><b>Description:</b><%= "\t#{dataset.description}" %></p>
         <p><b>Size:</b><%= "\t#{dataset.width} x #{dataset.height} x #{dataset.frames}" %></p>
-        <%= link_to "Download", getDataset(dataset) %>
+        <p><b>Number of downloads:</b><%= "\t#{dataset.download_num}"%></p>
+
+        <%= link_to("Download", {:controller => "datasets", :action => "download", :dataset_id => dataset.id}, 'data-no-turbolink' => true) %>
     </div>
 </div>
        

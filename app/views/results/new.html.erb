@@ -1,0 +1,18 @@
+<h1>Evaluate an algorithm</h1>
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <%= form_for(@result) do |f| %>
+            <%= f.label :algorithm, class: "col-sm-4 control-label" %>
+            <div class="col-sm-8">
+                <%= select_tag :result_algorithm, options_for_select(@algorithms.collect {|p| [p['name']]}) %>
+            </div>
+            <div class="form-group">
+                <%= f.label :file, class: "col-sm-4 control-label" %>
+                <div class="col-sm-8">
+                    <%= f.file_field :file %>
+                </div>
+            </div>
+            <%= f.submit "Run evaluation", class: "btn btn-primary" %>
+        <% end %>
+    </div>
+</div>

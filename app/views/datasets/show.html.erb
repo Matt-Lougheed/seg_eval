@@ -1,1 +1,86 @@
-<%= @dataset.name %>, <%= @dataset.description %>
+<div class="row">
+    <div class="col-md-4">
+        <h2><%= @dataset.name %></h2>
+        <hr/>        
+        <br/>
+        <h4>Description:</h4>
+        <%= @dataset.description %>
+        <h4>Size:</h4>
+        <%= @dataset.width%> x <%= @dataset.height%> x <%= @dataset.frames%>
+        <h4>Owner:</h4>
+        <%= @dataset.user.name %>
+        <h4>Email:</h4>
+        <%= mail_to @dataset.user.email %>
+        <h4>Upload date:</h4>
+        <%= @dataset.created_at.strftime("%d %b. %Y")%>
+        <h4>Download:</h4>
+        <%= link_to("#{@dataset.name} zip", {:controller => params[:controller], :action => "download", :dataset_id => @dataset.id}, 'data-no-turbolink' => true) %>
+        <h4>Total number of downloads:</h4>
+        <%= @dataset.download_num%>
+    </div>
+    <div class="col-md-8">
+        <%= image_tag("/uploads/dataset/#{@dataset.user_id}/#{@dataset.id}/#{@dataset.frame}", alt: "Dataset #{@dataset.id} image", class: "img-responsive") %>
+    </div>
+</div>
+<div class="row">
+    <hr/>
+    <h2>Algorithm performance</h2>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th class="col-md-4>">Name</th>
+                <th class="col-md-4">Hausdorff</th>
+                <th class="col-md-4">Dice</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <% if @results.nil? %>
+        <div class="col-md-3 col-md-offset-4">
+            <h4>No algorithm results available</h4>
+        </div>
+    <% end %>
+</div>
+<% if logged_in? %>
+    <div class="row">
+    <hr/>
+    <br/><br/>
+    <h2>Evaluate an algorithm on this dataset</h2>
+    <div class="col-md-6">
+        <%= form_for @result, :html => {:class => "form-horizontal"} do |f| %>
+            <div class="form-group">
+                <%= f.label :algorithm_id, class: "col-sm-2 control-label" %>
+                <div class="col-sm-10">
+                    <%= f.select(:algorithm_id, options_for_select(@algorithms.collect {|p| [p['name'], p['id']]}), {}, {:class => 'form-control'}) %>
+                </div>
+            </div>
+            <div class="form-group">
+                <%= f.label :file, class: "col-sm-2 control-label" %>
+                <div class="col-sm-10">
+                    <%= f.file_field :file, class: 'form-control' %>
+                </div>
+            </div>
+            <span id="helpBlock" class="help-block">Choose the evaluation methods you wish to use below.</span>
+            <%= f.label :hausdorff, class: "checkbox" do %>
+                <%= f.check_box :hausdorff %>
+                Hausdorff
+            <% end %>
+            <%= f.label :dice, class: "checkbox" do %>
+                <%= f.check_box :dice %>
+                Dice
+            <% end %>
+            <%= f.hidden_field(:dataset_id, :value => @dataset.id) %>
+            <%= f.submit "Run evaluation", class: "btn btn-primary", style: "margin-top: 25px" %>
+        <% end %>
+    </div>
+</div>
+<% end %>
+
+<!--
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+        <%= button_to "Test algorithm on this dataset", "/results/new", :class => "btn btn-primary", :method => :get %>
+    </div>
+</div>
+-->
