@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
     get 'algorithms/new'
 
-    get 'datasets/new'  
+    get 'datasets/new'
     get 'sessions/new'
     root 'main_pages#home'
     get 'help' => 'main_pages#help'
@@ -12,8 +12,10 @@ Rails.application.routes.draw do
     post 'login' => 'sessions#create'
     delete 'logout' => 'sessions#destroy'
 
+    get 'download' => 'datasets#download'
     resources :users
     resources :datasets
+    resources :results
     resources :algorithms do
         member do
             get :download
