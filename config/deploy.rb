@@ -1,5 +1,5 @@
 # Change these
-server 'masters.mattlougheed.me', port: 80, roles: [:web, :app, :db], primary: true
+server 'masters.mattlougheed.me', port: 22, roles: [:web, :app, :db], primary: true
 
 set :repo_url,        'git@github.com:Mattel/seg_eval.git'
 set :application,     'seg_eval'
