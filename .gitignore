@@ -25,3 +25,9 @@
 
 # Ignore database
 database.yml
+
+# Ignore ITK script binaries
+/scripts/*/bin
+
+# Ignore shared folder
+/shared
