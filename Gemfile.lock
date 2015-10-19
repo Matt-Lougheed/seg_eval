@@ -93,6 +93,7 @@ GEM
     mini_portile (0.6.2)
     minitest (5.6.1)
     multi_json (1.11.0)
+    mysql2 (0.3.20)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (3.0.1)
@@ -134,6 +135,8 @@ GEM
     rdoc (4.2.0)
     redcarpet (3.3.2)
     rubyzip (1.1.7)
+    rvm-capistrano (1.5.0)
+      capistrano (>= 2.15.4)
     sass (3.4.13)
     sass-rails (5.0.3)
       railties (>= 4.0.0, < 5.0)
@@ -192,11 +195,13 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   mini_magick
+  mysql2 (~> 0.3.18)
   puma
   pygments.rb
   rails (= 4.2.0)
   redcarpet
   rubyzip
+  rvm-capistrano
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   spring
