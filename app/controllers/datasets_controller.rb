@@ -32,13 +32,14 @@ class DatasetsController < ApplicationController
 
             # Create frame and thumbnail for .mha file
             if (File.extname(file_path) == ".mha")
-                #system("/data/code/itk_scripts/mha_to_png/bin/MhaToPng #{file_path} 1")
-                system(Rails.root.join("/mha_to_png/bin/MhaToPng #{file_path} 1").to_s)
+              #system("/data/code/itk_scripts/mha_to_png/bin/MhaToPng #{file_path} 1")
+              result = system(Rails.root.join('scripts','mha_to_png','bin',"MhaToPng #{file_path} 1").to_s)
                 base_name = File.basename(file_path, ".mha")
                 image = MiniMagick::Image.open("#{dir_path}/#{base_name}_frame.png")
                 image.resize "200x200"
                 image.format "png"
                 image.write "#{dir_path}/#{base_name}_thumbnail.png"
+                File.chmod(0644,"#{dir_path}/#{base_name}_thumbnail.png")
                 @dataset.thumbnail = "#{base_name}_thumbnail.png"
                 @dataset.frame = "#{base_name}_frame.png"                
             end
