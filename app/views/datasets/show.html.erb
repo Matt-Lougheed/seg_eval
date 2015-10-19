@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-4">
-        <h2><%= @dataset.name %></h2>
+        <h2 class="dataset_heading"><%= @dataset.name %></h2>
         <hr/>        
         <br/>
         <h4>Description:</h4>
@@ -24,7 +24,7 @@
 </div>
 <div class="row">
     <hr/>
-    <h2>Algorithm performance</h2>
+    <h2 class="dataset_heading">Algorithm performance</h2>
     <table class="table table-hover">
         <thead>
             <tr>
@@ -45,8 +45,8 @@
 <% if logged_in? %>
     <div class="row">
     <hr/>
-    <br/><br/>
-    <h2>Evaluate an algorithm on this dataset</h2>
+
+    <h2 class="dataset_heading">Evaluate an algorithm on this dataset</h2>
     <div class="col-md-6">
         <%= form_for @result, :html => {:class => "form-horizontal"} do |f| %>
             <div class="form-group">

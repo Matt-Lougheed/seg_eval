@@ -10,6 +10,10 @@ $header-link-color: #BEB5B5;
     box-sizing: border-box;
 }
 
+hr {
+   border-top: 1px solid #7B1D13;
+}
+
 body {
     padding-top: 60px;
 }
@@ -101,6 +105,10 @@ input {
 }
 
 /* datasets */
+
+.dataset_heading {
+  color: #807E7E;
+}
 
 .dataset_listing {
     margin-top: 20px;
