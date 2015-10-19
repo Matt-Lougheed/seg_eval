@@ -1,0 +1,40 @@
+=== puma startup: 2015-10-18 21:31:55 -0400 ===
+2015-10-18 21:32:05 -0400: Rack app error: #<RuntimeError: Missing `secret_token` and `secret_key_base` for 'production' environment, set these values in `config/secrets.yml`>
+/home/matt/.rvm/gems/ruby-2.2.2@seg_eval/gems/railties-4.2.0/lib/rails/application.rb:520:in `validate_secret_key_config!'
+/home/matt/.rvm/gems/ruby-2.2.2@seg_eval/gems/railties-4.2.0/lib/rails/application.rb:246:in `env_config'
+/home/matt/.rvm/gems/ruby-2.2.2@seg_eval/gems/railties-4.2.0/lib/rails/engine.rb:514:in `call'
+/home/matt/.rvm/gems/ruby-2.2.2@seg_eval/gems/railties-4.2.0/lib/rails/application.rb:164:in `call'
+/home/matt/.rvm/gems/ruby-2.2.2@seg_eval/gems/puma-2.14.0/lib/puma/configuration.rb:78:in `call'
+/home/matt/.rvm/gems/ruby-2.2.2@seg_eval/gems/puma-2.14.0/lib/puma/server.rb:541:in `handle_request'
+/home/matt/.rvm/gems/ruby-2.2.2@seg_eval/gems/puma-2.14.0/lib/puma/server.rb:388:in `process_client'
+/home/matt/.rvm/gems/ruby-2.2.2@seg_eval/gems/puma-2.14.0/lib/puma/server.rb:270:in `block in run'
+/home/matt/.rvm/gems/ruby-2.2.2@seg_eval/gems/puma-2.14.0/lib/puma/thread_pool.rb:106:in `call'
+/home/matt/.rvm/gems/ruby-2.2.2@seg_eval/gems/puma-2.14.0/lib/puma/thread_pool.rb:106:in `block in spawn_thread'
+2015-10-18 21:32:06 -0400: Rack app error: #<RuntimeError: Missing `secret_token` and `secret_key_base` for 'production' environment, set these values in `config/secrets.yml`>
+/home/matt/.rvm/gems/ruby-2.2.2@seg_eval/gems/railties-4.2.0/lib/rails/application.rb:520:in `validate_secret_key_config!'
+/home/matt/.rvm/gems/ruby-2.2.2@seg_eval/gems/railties-4.2.0/lib/rails/application.rb:246:in `env_config'
+/home/matt/.rvm/gems/ruby-2.2.2@seg_eval/gems/railties-4.2.0/lib/rails/engine.rb:514:in `call'
+/home/matt/.rvm/gems/ruby-2.2.2@seg_eval/gems/railties-4.2.0/lib/rails/application.rb:164:in `call'
+/home/matt/.rvm/gems/ruby-2.2.2@seg_eval/gems/puma-2.14.0/lib/puma/configuration.rb:78:in `call'
+/home/matt/.rvm/gems/ruby-2.2.2@seg_eval/gems/puma-2.14.0/lib/puma/server.rb:541:in `handle_request'
+/home/matt/.rvm/gems/ruby-2.2.2@seg_eval/gems/puma-2.14.0/lib/puma/server.rb:388:in `process_client'
+/home/matt/.rvm/gems/ruby-2.2.2@seg_eval/gems/puma-2.14.0/lib/puma/server.rb:270:in `block in run'
+/home/matt/.rvm/gems/ruby-2.2.2@seg_eval/gems/puma-2.14.0/lib/puma/thread_pool.rb:106:in `call'
+/home/matt/.rvm/gems/ruby-2.2.2@seg_eval/gems/puma-2.14.0/lib/puma/thread_pool.rb:106:in `block in spawn_thread'
+=== puma startup: 2015-10-18 21:40:11 -0400 ===
+=== puma startup: 2015-10-18 21:43:05 -0400 ===
+=== puma startup: 2015-10-18 21:52:36 -0400 ===
+=== puma startup: 2015-10-18 22:04:54 -0400 ===
+=== puma startup: 2015-10-18 22:11:18 -0400 ===
+=== puma startup: 2015-10-18 22:13:42 -0400 ===
+=== puma startup: 2015-10-18 22:14:36 -0400 ===
+=== puma startup: 2015-10-18 22:17:55 -0400 ===
+=== puma startup: 2015-10-18 22:18:24 -0400 ===
+=== puma startup: 2015-10-18 22:40:02 -0400 ===
+=== puma startup: 2015-10-18 22:44:47 -0400 ===
+=== puma startup: 2015-10-18 22:47:29 -0400 ===
+=== puma startup: 2015-10-18 22:53:08 -0400 ===
+=== puma startup: 2015-10-18 23:27:33 -0400 ===
+=== puma startup: 2015-10-18 23:29:46 -0400 ===
+=== puma startup: 2015-10-18 23:37:42 -0400 ===
+=== puma startup: 2015-10-18 23:38:23 -0400 ===
