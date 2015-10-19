@@ -22,3 +22,6 @@
 
 # Ignore mac file
 .DS_Store
+
+# Ignore database
+database.yml
