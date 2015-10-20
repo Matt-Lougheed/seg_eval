@@ -13,9 +13,9 @@ class DatasetsController < ApplicationController
         @dataset.download_num = 0
         if @dataset.save
             # Write the dataset to file
-            uploaded_file = params[:dataset][:file]
+            uploaded_file = params[:dataset][:image_file]
             filename = uploaded_file.original_filename
-            dir_path = Rails.root.join('public/uploads/dataset',current_user.id.to_s,@dataset.id.to_s)
+            dir_path = Rails.root.join('public','uploads','dataset',current_user.id.to_s,@dataset.id.to_s)
             FileUtils.mkdir_p(dir_path) unless File.directory?(dir_path)
             file_path = Rails.root.join(dir_path,filename)
             File.open(file_path, 'wb') do |file|
@@ -23,7 +23,7 @@ class DatasetsController < ApplicationController
             end
 
             # Write the ground truth to file
-            ground_truth_file = params[:dataset][:ground_truth]
+            ground_truth_file = params[:dataset][:ground_truth_file]
             filename = ground_truth_file.original_filename
             ground_truth_path = Rails.root.join(dir_path,filename)
             File.open(ground_truth_path, 'wb') do |file|
@@ -32,8 +32,8 @@ class DatasetsController < ApplicationController
 
             # Create frame and thumbnail for .mha file
             if (File.extname(file_path) == ".mha")
-              #system("/data/code/itk_scripts/mha_to_png/bin/MhaToPng #{file_path} 1")
-              result = system(Rails.root.join('scripts','mha_to_png','bin',"MhaToPng #{file_path} 1").to_s)
+                #system("/data/code/itk_scripts/mha_to_png/bin/MhaToPng #{file_path} 1")
+                result = system(Rails.root.join('scripts','mha_to_png','bin',"MhaToPng #{file_path} 1").to_s)
                 base_name = File.basename(file_path, ".mha")
                 image = MiniMagick::Image.open("#{dir_path}/#{base_name}_frame.png")
                 image.resize "200x200"
@@ -84,9 +84,9 @@ class DatasetsController < ApplicationController
 
     # TODO: will need to remove filename and thumbnail as these will be generated from uploaded files
     def dataset_params
-        permitted = params.require(:dataset).permit(:name,:description,:height,:width,:frames)
-        permitted[:filename] = params[:dataset][:file].original_filename
-        permitted[:ground_truth] = params[:dataset][:ground_truth].original_filename
+        permitted = params.require(:dataset).permit(:name,:description,:height,:width,:frames,:image_file,:ground_truth_file)
+        #permitted[:filename] = params[:dataset][:file].original_filename
+        #permitted[:ground_truth] = params[:dataset][:ground_truth].original_filename
         return permitted
     end
 end
