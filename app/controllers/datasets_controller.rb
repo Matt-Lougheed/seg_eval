@@ -11,9 +11,27 @@ class DatasetsController < ApplicationController
     def create
         @dataset = current_user.datasets.build(dataset_params)
         @dataset.download_num = 0
-        if @dataset.save
+        
+        # Validate form parameters
+        validDataset = @dataset.valid?
+        
+        # Validate presence of original and ground truth images from form
+        unless params[:image_file].present?
+            @dataset.errors.add(:image_file, "Image file cannot be blank.")
+        end
+        unless params[:ground_truth_file].present?
+            @dataset.errors.add(:ground_truth_file, "Ground truth file cannot be blank.")
+        end        
+        @dataset.errors.full_messages.each do |msg|
+            puts msg
+        end
+        
+        # If images not supplied or other form parameters not there return errors
+        if @dataset.errors.any?
+            render :new
+        elsif @dataset.save
             # Write the dataset to file
-            uploaded_file = params[:dataset][:image_file]
+            uploaded_file = params[:image_file]
             filename = uploaded_file.original_filename
             dir_path = Rails.root.join('public','uploads','dataset',current_user.id.to_s,@dataset.id.to_s)
             FileUtils.mkdir_p(dir_path) unless File.directory?(dir_path)
@@ -23,7 +41,7 @@ class DatasetsController < ApplicationController
             end
 
             # Write the ground truth to file
-            ground_truth_file = params[:dataset][:ground_truth_file]
+            ground_truth_file = params[:ground_truth_file]
             filename = ground_truth_file.original_filename
             ground_truth_path = Rails.root.join(dir_path,filename)
             File.open(ground_truth_path, 'wb') do |file|
@@ -32,7 +50,6 @@ class DatasetsController < ApplicationController
 
             # Create frame and thumbnail for .mha file
             if (File.extname(file_path) == ".mha")
-                #system("/data/code/itk_scripts/mha_to_png/bin/MhaToPng #{file_path} 1")
                 result = system(Rails.root.join('scripts','mha_to_png','bin',"MhaToPng #{file_path} 1").to_s)
                 base_name = File.basename(file_path, ".mha")
                 image = MiniMagick::Image.open("#{dir_path}/#{base_name}_frame.png")
@@ -43,21 +60,23 @@ class DatasetsController < ApplicationController
                 @dataset.thumbnail = "#{base_name}_thumbnail.png"
                 @dataset.frame = "#{base_name}_frame.png"                
             end
+
+            # Zip the files together as a package for users to download
             require 'zip'
             zip_files = [ground_truth_file.original_filename, uploaded_file.original_filename]
             zip_filename = Rails.root.join(dir_path, "Dataset_#{@dataset.id}.zip")
-
             Zip::File.open(zip_filename, Zip::File::CREATE) do |zipfile|
                 zip_files.each do |file|
                     zipfile.add(file, "#{dir_path}/#{file}")
                 end
             end
 
+            # Update the dataset with the new paths for thumbnail and frame
             @dataset.save
-            flash[:sucess] = "Success: new dataset created!"
+            flash[:success] = "Success: new dataset created!"
             redirect_to @dataset
         else
-            render 'new'
+            @dataset.error.add(:unknown_error, "Unkown error has occured")
         end
     end
 
@@ -82,11 +101,8 @@ class DatasetsController < ApplicationController
 
     private
 
-    # TODO: will need to remove filename and thumbnail as these will be generated from uploaded files
     def dataset_params
-        permitted = params.require(:dataset).permit(:name,:description,:height,:width,:frames,:image_file,:ground_truth_file)
-        #permitted[:filename] = params[:dataset][:file].original_filename
-        #permitted[:ground_truth] = params[:dataset][:ground_truth].original_filename
+        permitted = params.require(:dataset).permit(:name,:description,:height,:width,:frames)
         return permitted
     end
 end
