@@ -33,6 +33,7 @@ class DatasetsController < ApplicationController
             # Write the dataset to file
             uploaded_file = params[:image_file]
             filename = uploaded_file.original_filename
+            @dataset.filename = filename
             dir_path = Rails.root.join('public','uploads','dataset',current_user.id.to_s,@dataset.id.to_s)
             FileUtils.mkdir_p(dir_path) unless File.directory?(dir_path)
             file_path = Rails.root.join(dir_path,filename)
@@ -43,9 +44,10 @@ class DatasetsController < ApplicationController
             # Write the ground truth to file
             ground_truth_file = params[:ground_truth_file]
             filename = ground_truth_file.original_filename
+            @dataset.ground_truth = filename
             ground_truth_path = Rails.root.join(dir_path,filename)
             File.open(ground_truth_path, 'wb') do |file|
-                file.write(uploaded_file.read)
+                file.write(ground_truth_file.read)
             end
 
             # Create frame and thumbnail for .mha file

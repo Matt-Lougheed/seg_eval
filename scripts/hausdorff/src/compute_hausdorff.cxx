@@ -7,10 +7,10 @@
 int main(int argc, char *argv[])
 {
   // Check command line arguments
-  if (argc < 3)
+  if (argc < 4)
     {
       std::cerr << "Usage: " << std::endl;
-      std::cerr << argv[0] << " firstImageFileName secondImageFileName" << std::endl;
+      std::cerr << argv[0] << " firstImageFileName secondImageFileName outputFile" << std::endl;
       return EXIT_FAILURE;
     }
 
@@ -20,7 +20,8 @@ int main(int argc, char *argv[])
   
   ReaderType::Pointer reader1 = ReaderType::New();
   ReaderType::Pointer reader2 = ReaderType::New();
-  
+
+  std::string outputFileName = argv[3];
   // Read first image
   reader1->SetFileName(argv[1]);
   reader1->Update();
@@ -37,8 +38,10 @@ int main(int argc, char *argv[])
   hausdorffFilter->SetInput2(reader2->GetOutput());
   hausdorffFilter->Update();
 
-  // Print result
-  std::cout << "Hausdorff Distance: " << hausdorffFilter->GetHausdorffDistance() << std::endl;
-
-  return hausdorffFilter->GetHausdorffDistance();
+  // Write result to file
+  std::ofstream outputFile;
+  outputFile.open(outputFileName.c_str(), std::ios::app);
+  outputFile << "Hausdorff " << hausdorffFilter->GetHausdorffDistance() << std::endl;
+  outputFile.close();
+  return EXIT_SUCCESS;
 }
