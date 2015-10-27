@@ -54,8 +54,15 @@ class ResultsController < ApplicationController
             end
 
             # Update results with the metrics which were run
-            # TODO: parse results file and update results object and save
-            
+            results = Hash[*File.read(results_file_path).split(/[\s \n]+/)]
+            if results.has_key?("Hausdorff")
+                @result.hausdorff = results["Hausdorff"]
+            end
+            if results.has_key?("Dice")
+                @result.dice = results["Dice"]
+            end
+            @result.save
+
             # Go to new result
             redirect_to @result
         else

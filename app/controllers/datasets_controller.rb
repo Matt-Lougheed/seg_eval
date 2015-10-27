@@ -99,6 +99,8 @@ class DatasetsController < ApplicationController
             @algorithms = Algorithm.where(user_id: current_user.id)
         end
         @result = Result.new
+        @current_results = Result.where(dataset_id: @dataset.id)
+        puts @current_results
     end
 
     private

@@ -28,19 +28,30 @@
     <table class="table table-hover">
         <thead>
             <tr>
-                <th class="col-md-4>">Name</th>
-                <th class="col-md-4">Hausdorff</th>
-                <th class="col-md-4">Dice</th>
+                <th class="col-md-3>">Name</th>
+                <th class="col-md-3">Hausdorff</th>
+                <th class="col-md-3">Dice</th>
+                <th class="col-md-3">Date</th>
             </tr>
         </thead>
         <tbody>
+            <% if not @current_results.blank? %>
+                <% @current_results.each do |result| %>
+                    <tr>
+                        <td><%= link_to result.algorithm.name, algorithm_path(result.algorithm) %></td>
+                        <td><%= result.hausdorff %></td>
+                        <td><%= result.dice %></td>
+                        <td><%= result.created_at %></td>
+                    </tr>
+                <% end %>
+            <% end %>
         </tbody>
     </table>
-    <% if @results.nil? %>
+    <% if @current_results.blank? %>
         <div class="col-md-3 col-md-offset-4">
             <h4>No algorithm results available</h4>
         </div>
-    <% end %>
+    <% end %>                
 </div>
 <% if logged_in? %>
     <div class="row">

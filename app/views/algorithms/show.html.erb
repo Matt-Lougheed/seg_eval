@@ -7,7 +7,7 @@
         <h4>Description:</h4>
         <p><%= @algorithm.description %></p>
         <h4>Owner:</h4>
-        <p><%= @algorithm.user.name %></p>
+        <p><%= link_to @algorithm.user.name, user_path(@algorithm.user) %></p>
     </div>
     <div class="col-md-8">
         <%= highlight_code @algorithm %>
