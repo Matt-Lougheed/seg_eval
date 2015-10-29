@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150923161416) do
+ActiveRecord::Schema.define(version: 20151029120540) do
 
   create_table "algorithms", force: :cascade do |t|
     t.string   "name"
@@ -28,14 +28,14 @@ ActiveRecord::Schema.define(version: 20150923161416) do
 
   create_table "datasets", force: :cascade do |t|
     t.string   "name"
-    t.string   "filename"
+    t.string   "image_sequence"
     t.string   "thumbnail"
     t.string   "description"
     t.integer  "height"
     t.integer  "width"
     t.integer  "frames"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
     t.integer  "user_id"
     t.integer  "download_num"
     t.string   "frame"
@@ -43,6 +43,18 @@ ActiveRecord::Schema.define(version: 20150923161416) do
   end
 
   add_index "datasets", ["user_id"], name: "index_datasets_on_user_id"
+
+  create_table "image_sequences", force: :cascade do |t|
+    t.string   "filename"
+    t.string   "thumbnail"
+    t.string   "frame"
+    t.integer  "height"
+    t.integer  "width"
+    t.integer  "depth"
+    t.string   "type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "results", force: :cascade do |t|
     t.integer  "dataset_id"

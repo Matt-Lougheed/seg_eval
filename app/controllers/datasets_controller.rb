@@ -10,42 +10,32 @@ class DatasetsController < ApplicationController
 
     def create
         @dataset = current_user.datasets.build(dataset_params)
+
+        # Set starting downloads to zero
         @dataset.download_num = 0
         
-        # Validate form parameters
-        validDataset = @dataset.valid?
-        
-        # Validate presence of original and ground truth images from form
-        unless params[:image_file].present?
-            @dataset.errors.add(:image_file, "Image file cannot be blank.")
+        # Validate presence of original and ground truth images from form and sets the filenames
+        if dataset_params[:image_sequence].present?
+            @dataset.image_sequence = dataset_params[:image_sequence].original_filename.to_s
         end
-        unless params[:ground_truth_file].present?
-            @dataset.errors.add(:ground_truth_file, "Ground truth file cannot be blank.")
-        end        
-        @dataset.errors.full_messages.each do |msg|
-            puts msg
+        if dataset_params[:ground_truth].present?
+            @dataset.ground_truth = dataset_params[:ground_truth].original_filename.to_s
         end
-        
-        # If images not supplied or other form parameters not there return errors
-        if @dataset.errors.any?
-            render :new
-        elsif @dataset.save
+
+        # Save the dataset, then we must write the files
+        if @dataset.save
             # Write the dataset to file
-            uploaded_file = params[:image_file]
-            filename = uploaded_file.original_filename
-            @dataset.filename = filename
+            uploaded_file = dataset_params[:image_sequence]
             dir_path = Rails.root.join('public','uploads','dataset',current_user.id.to_s,@dataset.id.to_s)
             FileUtils.mkdir_p(dir_path) unless File.directory?(dir_path)
-            file_path = Rails.root.join(dir_path,filename)
+            file_path = Rails.root.join(dir_path, @dataset.image_sequence)
             File.open(file_path, 'wb') do |file|
                 file.write(uploaded_file.read)
             end
 
             # Write the ground truth to file
-            ground_truth_file = params[:ground_truth_file]
-            filename = ground_truth_file.original_filename
-            @dataset.ground_truth = filename
-            ground_truth_path = Rails.root.join(dir_path,filename)
+            ground_truth_file = dataset_params[:ground_truth]
+            ground_truth_path = Rails.root.join(dir_path, @dataset.ground_truth)
             File.open(ground_truth_path, 'wb') do |file|
                 file.write(ground_truth_file.read)
             end
@@ -78,7 +68,7 @@ class DatasetsController < ApplicationController
             flash[:success] = "Success: new dataset created!"
             redirect_to @dataset
         else
-            @dataset.error.add(:unknown_error, "Unkown error has occured")
+            render :new
         end
     end
 
@@ -106,7 +96,7 @@ class DatasetsController < ApplicationController
     private
 
     def dataset_params
-        permitted = params.require(:dataset).permit(:name,:description,:height,:width,:frames)
+        permitted = params.require(:dataset).permit(:name,:description,:height,:width,:frames,:image_sequence,:ground_truth)
         return permitted
     end
 end

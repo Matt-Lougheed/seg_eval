@@ -34,15 +34,15 @@
                 </div>
             </div>
             <div class="form-group">
-                <%= label :image_file, "File", class: "col-sm-4 control-label" %>
+                <%= f.label :image_sequence, class: "col-sm-4 control-label" %>
                 <div class="col-sm-8">
-                    <%= file_field_tag :image_file, class: 'form-control' %>
+                    <%= f.file_field :image_sequence, class: 'form-control' %>
                 </div>
             </div>
             <div class="form-group">
-                <%= label :ground_truth_file, "Ground Truth", class: "col-sm-4 control-label" %>
+                <%= f.label :ground_truth, class: "col-sm-4 control-label" %>
                 <div class="col-sm-8">
-                    <%= file_field_tag :ground_truth_file, class: 'form-control' %>
+                    <%= f.file_field :ground_truth, class: 'form-control' %>
                 </div>
             </div>
             <%= f.submit "Create new dataset", class: "btn btn-primary" %>
