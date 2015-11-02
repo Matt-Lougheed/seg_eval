@@ -39,8 +39,16 @@
                 <% @current_results.each do |result| %>
                     <tr>
                         <td><%= link_to result.algorithm.name, algorithm_path(result.algorithm) %></td>
-                        <td><%= result.hausdorff %></td>
-                        <td><%= result.dice %></td>
+                        <% if result.hausdorff != -1 %>
+                            <td><%= result.hausdorff %></td>
+                        <% else %>
+                            <td>N/A</td>
+                        <% end %>
+                        <% if result.dice != -1 %>
+                            <td><%= result.dice %></td>
+                        <% else %>
+                            <td>N/A</td>
+                        <% end %>
                         <td><%= result.created_at %></td>
                     </tr>
                 <% end %>

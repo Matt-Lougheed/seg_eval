@@ -45,19 +45,15 @@ class ResultsController < ApplicationController
             system("touch #{results_file_path}")
 
             # Compute hausdorff distance metric if requested and write it to results file
-            if params[:result][:hausdorff].present?
-                puts "********** RUNNING ComputeHausdorff **************"
+            if params[:result][:hausdorff] == 1
                 cmd = Rails.root.join('scripts','hausdorff','bin',"ComputeHausdorff #{file_path} #{ground_truth_path} #{results_file_path}").to_s
                 hausdorff_result = system(cmd)
-                puts "*********** #{hausdorff_result.to_s} **************"
             end
 
             # Compute dice coefficient metric if requested and write it to results file
-            if params[:result][:dice].present?
-                puts "********** RUNNING ComputeDiceCoefficient **************"
+            if params[:result][:dice] == 1
                 cmd = Rails.root.join('scripts','dice_coefficient','bin',"ComputeDiceCoefficient #{file_path} #{ground_truth_path} #{results_file_path}").to_s
                 dice_coefficient_result = system(cmd)
-                puts "*********** #{dice_coefficient_result.to_s} **************"
             end
 
             # Update results with the metrics which were run
@@ -67,9 +63,13 @@ class ResultsController < ApplicationController
             # N/A or similar in results table view
             if results.has_key?("Hausdorff")
                 @result.hausdorff = results["Hausdorff"]
+            else
+                @result.hausdorff = -1
             end
             if results.has_key?("Dice")
                 @result.dice = results["Dice"]
+            else
+                @result.dice = -1
             end
             @result.save
 
