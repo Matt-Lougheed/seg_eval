@@ -37,20 +37,22 @@
         <tbody>
             <% if not @current_results.blank? %>
                 <% @current_results.each do |result| %>
-                    <tr>
-                        <td><%= link_to result.algorithm.name, algorithm_path(result.algorithm) %></td>
-                        <% if result.hausdorff != -1 %>
-                            <td><%= result.hausdorff %></td>
-                        <% else %>
-                            <td>N/A</td>
-                        <% end %>
-                        <% if result.dice != -1 %>
-                            <td><%= result.dice %></td>
-                        <% else %>
-                            <td>N/A</td>
-                        <% end %>
-                        <td><%= result.created_at %></td>
-                    </tr>
+                    <% if result.public == 1 %>
+                        <tr>
+                            <td><%= link_to result.algorithm.name, algorithm_path(result.algorithm) %></td>
+                            <% if result.hausdorff != -1 %>
+                                <td><%= result.hausdorff %></td>
+                            <% else %>
+                                <td>N/A</td>
+                            <% end %>
+                            <% if result.dice != -1 %>
+                                <td><%= result.dice %></td>
+                            <% else %>
+                                <td>N/A</td>
+                            <% end %>
+                            <td><%= result.created_at %></td>
+                        </tr>
+                    <% end %>
                 <% end %>
             <% end %>
         </tbody>
@@ -91,6 +93,7 @@
                 Dice
             <% end %>
             <%= f.hidden_field(:dataset_id, :value => @dataset.id) %>
+            <%= f.hidden_field(:public, :value => 0) %>
             <%= f.submit "Run evaluation", class: "btn btn-primary", style: "margin-top: 25px" %>
         <% end %>
     </div>

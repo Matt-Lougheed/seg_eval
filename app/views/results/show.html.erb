@@ -1,12 +1,37 @@
 <div class="row">
+    <div class="col-md-12">
+        <h3> Results for the evaluation of <%= @result.algorithm.name%> on <%= @result.dataset.name%></h3>
+        <hr/>
+    </div>
     <div class="col-md-4">
         <h4>Algorithm ID:</h4>
         <%= @result.algorithm_id %>
-        <h4>Hausdorff</h4>
+        <h4>Hausdorff:</h4>
         <%= @result.hausdorff %>
-        <h4>Dice</h4>
+        <h4>Dice:</h4>
         <%= @result.dice %>
-        <h4>Dataset ID</h4>
+        <h4>Dataset ID:</h4>
         <%= @result.dataset_id %>
+        <h4>Visibility:</h4>
+        <% if @result.public == 0 %>
+            Hidden
+        <% else %>
+            Public
+        <% end %>
+    </div>
+    <div class="col-md-8">
+        <% if @result.public == 0 %>        
+            <h4>This result is currently not visible to the public, do you wish to make it public?</h4>
+        <% else %>
+            <h4> This result is currently visible to the public, do you wish to hide it?</h4>
+        <% end %>
+        <%= form_for @result, :html => {:class => "form-horizontal"} do |f| %>
+            <% if @result.public == 0 %>
+                <%= f.hidden_field(:public, :value => 1) %>
+            <% else %>
+                <%= f.hidden_field(:public, :value => 0) %>
+            <% end %>
+            <%= f.submit "Yes", class: "btn btn-primary" %>
+        <% end %>
     </div>
 </div>

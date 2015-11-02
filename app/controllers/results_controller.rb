@@ -14,19 +14,8 @@ class ResultsController < ApplicationController
         # Build new result
         @result = current_algorithm.results.build(result_params)
 
-        # TODO: These validations should be replaced with active record validations
-        validResult = @result.valid?
-        unless ((params[:result][:dice].present?) || (params[:result][:hausdorff].present?))
-            @result.errors.add :base, "You must choose at least one validation method"
-        end
-        unless params[:result][:file].present?
-            @result.errors.add :file, "Must supply a segmentation file"
-        end
-        if @result.errors.any?
-            @dataset = Dataset.find_by_id(@result.dataset_id)
-            @algorithms = Algorithm.where(user_id: current_user.id)
-            render :template => 'datasets/show'
-        elsif @result.save
+        # Save result and then compute metrics and update
+        if @result.save
             # Write the segmentation file to result directory
             uploaded_file = params[:result][:file]
             filename = uploaded_file.original_filename
@@ -45,13 +34,13 @@ class ResultsController < ApplicationController
             system("touch #{results_file_path}")
 
             # Compute hausdorff distance metric if requested and write it to results file
-            if params[:result][:hausdorff] == 1
+            if @result.hausdorff == 1
                 cmd = Rails.root.join('scripts','hausdorff','bin',"ComputeHausdorff #{file_path} #{ground_truth_path} #{results_file_path}").to_s
                 hausdorff_result = system(cmd)
             end
 
             # Compute dice coefficient metric if requested and write it to results file
-            if params[:result][:dice] == 1
+            if @result.dice == 1
                 cmd = Rails.root.join('scripts','dice_coefficient','bin',"ComputeDiceCoefficient #{file_path} #{ground_truth_path} #{results_file_path}").to_s
                 dice_coefficient_result = system(cmd)
             end
@@ -59,8 +48,7 @@ class ResultsController < ApplicationController
             # Update results with the metrics which were run
             results = Hash[*File.read(results_file_path).split(/[\s \n]+/)]
 
-            # TODO: Need to handle case where an option wasn't chosen, have to display
-            # N/A or similar in results table view
+            # Look for the metric computation results and fill in appropriate values
             if results.has_key?("Hausdorff")
                 @result.hausdorff = results["Hausdorff"]
             else
@@ -76,7 +64,9 @@ class ResultsController < ApplicationController
             # Go to new result
             redirect_to @result
         else
-            render 'new'
+            @dataset = Dataset.find_by_id(@result.dataset_id)
+            @algorithms = Algorithm.where(user_id: current_user.id)
+            render :template => 'datasets/show'
         end
     end
 
@@ -84,9 +74,22 @@ class ResultsController < ApplicationController
         @result = Result.find(params[:id])
     end
 
+    def update
+        @result = Result.find(params[:id])
+        if @result.update_attributes(result_params)
+        # Successfully updated the result
+            flash[:success] = "Your result has been updated"
+            redirect_to @result
+        else
+            # Unsuccessfull update
+            flash[:danger] = "Unable to update the result visibility"
+            redirect_to @result
+        end
+    end
+
     private
 
     def result_params
-        permitted = params.require(:result).permit(:algorithm_id, :hausdorff, :dice, :dataset_id)
+        permitted = params.require(:result).permit(:algorithm_id, :hausdorff, :dice, :dataset_id, :public, :file)
     end
 end

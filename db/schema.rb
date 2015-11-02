@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151029120540) do
+ActiveRecord::Schema.define(version: 20151102171428) do
 
   create_table "algorithms", force: :cascade do |t|
     t.string   "name"
@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(version: 20151029120540) do
     t.decimal  "dice"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+    t.integer  "public"
   end
 
   add_index "results", ["algorithm_id"], name: "index_results_on_algorithm_id"
