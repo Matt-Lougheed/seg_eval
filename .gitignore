@@ -31,3 +31,6 @@ database.yml
 
 # Ignore shared folder
 /shared
+
+# Ignore public uploads
+/public/uploads
