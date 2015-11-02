@@ -9,6 +9,7 @@ class DatasetsController < ApplicationController
     end
 
     def create
+        # Build new dataset
         @dataset = current_user.datasets.build(dataset_params)
 
         # Set starting downloads to zero
