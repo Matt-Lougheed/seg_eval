@@ -7,9 +7,9 @@
         <h4>Algorithm ID:</h4>
         <%= @result.algorithm_id %>
         <h4>Hausdorff:</h4>
-        <%= @result.hausdorff %>
+        <%= @result.hausdorff != -1 ? @result.hausdorff : "N/A" %>
         <h4>Dice:</h4>
-        <%= @result.dice %>
+        <%= @result.dice != -1 ? @result.dice : "N/A" %>
         <h4>Dataset ID:</h4>
         <%= @result.dataset_id %>
         <h4>Visibility:</h4>

@@ -22,6 +22,14 @@ class UsersController < ApplicationController
     def show
         @user = User.find(params[:id])
         @datasets = @user.datasets
+        @algorithms = @user.algorithms
+        # Must be a better way for this...
+        @results = []
+        @algorithms.each do |a|
+            a.results.each do |r|
+                @results << r
+            end
+        end
     end
 
     private

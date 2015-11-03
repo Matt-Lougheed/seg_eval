@@ -74,7 +74,6 @@ class DatasetsController < ApplicationController
     end
 
     def download
-        puts "in download"
         dataset = Dataset.find(params[:dataset_id])
         send_file "#{Rails.root}/public/uploads/dataset/#{dataset.user_id}/#{dataset.id}/Dataset_#{dataset.id}.zip"
         Dataset.increment_counter(:download_num, dataset.id)
@@ -91,7 +90,6 @@ class DatasetsController < ApplicationController
         end
         @result = Result.new
         @current_results = Result.where(dataset_id: @dataset.id)
-        puts @current_results
     end
 
     private

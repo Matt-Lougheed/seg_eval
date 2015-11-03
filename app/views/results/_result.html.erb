@@ -1,0 +1,9 @@
+<div class="row result_listing" id="result-<% result.id  %>">
+    <div class="col-md-12">
+        <h3><%= link_to "Algorithm: #{result.algorithm.name} - Dataset: #{result.dataset.name}", result %></h3>
+        <p><b>Hausdorff: </b><%= result.hausdorff != -1 ? result.hausdorff : "N/A" %></p>
+        <p><b>Dice: </b><%= result.dice != -1 ? result.dice : "N/A" %></p>
+        <p><b>Visibility: </b><%= result.public == 1 ? "Public" : "Private"%></p>
+        <p><b>Date submitted: </b><%= result.created_at %>
+    </div>
+</div>

@@ -4,7 +4,6 @@ class ResultsController < ApplicationController
     def new
         @result = Result.new
         @algorithms = Algorithm.where(user_id: current_user.id)
-        puts @algorithms
     end
 
     def create

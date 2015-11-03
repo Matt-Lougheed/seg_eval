@@ -23,6 +23,20 @@
                 <%= render @datasets %>
             </ol>
         <% end %>
+        <hr/>
+        <% if @user.algorithms.any? %>
+            <h3>Submitted Algorithms (<%= @user.algorithms.count %>)</h3>
+            <ol class="algorithms">
+                <%= render @algorithms %>
+            </ol>
+        <% end %>
+        <hr/>
+        <% if @results.any? %>
+            <h3>Submitted Results (<%= @results.count %>)</h3>
+            <ol class="results">
+                <%= render @results %>
+            </ol>
+        <% end %>
         <div class="col-md-6 col-md-offset-3">
              <%= button_to "Create new datset", "/datasets/new", :class => "btn btn-primary", :method => :get %>
         </div>
