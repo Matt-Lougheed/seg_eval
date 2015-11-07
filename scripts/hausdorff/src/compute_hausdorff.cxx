@@ -22,25 +22,45 @@ int main(int argc, char *argv[])
   ReaderType::Pointer reader2 = ReaderType::New();
 
   std::string outputFileName = argv[3];
+
+  // Write result to file
+  std::ofstream outputFile;
+  outputFile.open(outputFileName.c_str(), std::ios::app);
+  
   // Read first image
   reader1->SetFileName(argv[1]);
-  reader1->Update();
+  try {
+    reader1->Update();
+  } catch (itk::ExceptionObject & e) {
+    outputFile << e.GetDescription() << std::endl;
+    outputFile.close();
+    return EXIT_FAILURE;
+  }
   ImageType::Pointer image1 = reader1->GetOutput();
   
   // Read second image
   reader2->SetFileName(argv[2]);
-  reader2->Update();
+  try {
+    reader2->Update();
+  } catch (itk::ExceptionObject & e) {
+    outputFile << e.GetDescription() << std::endl;
+    outputFile.close();
+    return EXIT_FAILURE;
+  }
   ImageType::Pointer image2 = reader2->GetOutput();
 
   // Compute hausdorff distance
   FilterType::Pointer hausdorffFilter = FilterType::New();
   hausdorffFilter->SetInput1(reader1->GetOutput());
   hausdorffFilter->SetInput2(reader2->GetOutput());
-  hausdorffFilter->Update();
+  try {
+    hausdorffFilter->Update();
+  } catch (itk::ExceptionObject & e) {
+    outputFile << e.GetDescription() << std::endl;
+    outputFile.close();
+    return EXIT_FAILURE;
+  }
 
-  // Write result to file
-  std::ofstream outputFile;
-  outputFile.open(outputFileName.c_str(), std::ios::app);
   outputFile << "Hausdorff " << hausdorffFilter->GetHausdorffDistance() << std::endl;
   outputFile.close();
   return EXIT_SUCCESS;
