@@ -62,10 +62,14 @@ class Dataset < ActiveRecord::Base
     end
     
     def image_file_exists?
-        File.file?(Rails.root.join(dir_path, image_sequence))
+        puts "\n Checking if file exists in image_file_exists?\n"
+        test = File.file?(Rails.root.join(dir_path, image_sequence))
+        puts "\n Result: #{test} \n"
+        return test
     end
 
     def proper_image_size
+        puts "\n Checking for proper file size in proper_image_size\n"
         if ( (File.size(Rails.root.join(dir_path, image_sequence)).to_f / 2**20) > 4.0 )
             errors.add(:image_sequence, "must be smaller than 4 mb")
         end

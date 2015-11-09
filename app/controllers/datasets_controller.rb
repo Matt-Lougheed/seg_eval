@@ -22,9 +22,14 @@ class DatasetsController < ApplicationController
         if dataset_params[:ground_truth].present?
             @dataset.ground_truth = dataset_params[:ground_truth].original_filename.to_s
         end
+
+        # Validate that the uploaded file is smaller than the max size
+        if ( (dataset_params[:image_sequence].size / 2**20 > 4.0) )
+            @dataset.errors.add(:image_sequence, "must be smaller than 4 mb")
+        end
         
         # Save the dataset, then we must write the files and update the dataset
-        if @dataset.save
+        if @dataset.errors.empty? && @dataset.save
             # Write the dataset to file
             @dataset.write_sequence_to_file(dataset_params[:image_sequence], @dataset.image_sequence)
 
@@ -42,7 +47,7 @@ class DatasetsController < ApplicationController
 
             # Update the dataset with the new paths for thumbnail and frame
             @dataset.save
-
+            
             # Redirect to newly created dataset and display success notification
             flash[:success] = "Success: new dataset created!"
             redirect_to @dataset
