@@ -13,6 +13,8 @@ Rails.application.routes.draw do
     delete 'logout' => 'sessions#destroy'
 
     get 'download' => 'datasets#download'
+    get 'datasets/info' => 'datasets#info'
+    
     resources :users
     resources :datasets
     resources :results

@@ -22,7 +22,7 @@ class DatasetsController < ApplicationController
         if dataset_params[:ground_truth].present?
             @dataset.ground_truth = dataset_params[:ground_truth].original_filename.to_s
         end
-
+        
         # Save the dataset, then we must write the files and update the dataset
         if @dataset.save
             # Write the dataset to file
@@ -56,6 +56,12 @@ class DatasetsController < ApplicationController
         send_file "#{Rails.root}/public/uploads/dataset/#{dataset.user_id}/#{dataset.id}/#{dataset.name}.zip"
         Dataset.increment_counter(:download_num, dataset.id)
         dataset.save!
+    end
+
+    def info
+        datasets = Dataset.all
+        #datasets.to_json(:only => [:id, :name])
+        render :json => datasets.to_json(:only => [:id, :name])
     end
 
     def destroy

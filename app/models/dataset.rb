@@ -2,6 +2,7 @@ class Dataset < ActiveRecord::Base
     belongs_to :user
     validates :user_id, :name, :description, :image_sequence, :ground_truth, presence: true
     validate :proper_image_sequence_format
+    validate :proper_image_size, :if => :image_file_exists?
 
     # Write an uploaded image sequence to the specified filename
     def write_sequence_to_file(uploaded_file, filename)
@@ -59,7 +60,17 @@ class Dataset < ActiveRecord::Base
             errors.add(:image_sequence, "must be in .mha format currently")
         end
     end
+    
+    def image_file_exists?
+        File.file?(Rails.root.join(dir_path, image_sequence))
+    end
 
+    def proper_image_size
+        if ( (File.size(Rails.root.join(dir_path, image_sequence)).to_f / 2**20) > 4.0 )
+            errors.add(:image_sequence, "must be smaller than 4 mb")
+        end
+    end
+    
     def dir_path
         Rails.root.join('public', 'uploads', 'dataset', self.user.id.to_s, self.id.to_s)
     end
