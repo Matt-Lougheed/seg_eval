@@ -23,11 +23,14 @@
                 <ol class="datasets">
                     <%= render @datasets %>
                 </ol>
+            <% else %>
+                <h3>No Submitted Datasets</h3>
             <% end %>
-
+            <% if current_user?(@user) %>
             <div class="col-md-6 col-md-offset-3">
                 <%= button_to "Create new datset", "/datasets/new", :class => "btn btn-primary", :method => :get %>
             </div>
+            <% end %>
         </div>
         <div class="col-md-12">
             <hr/>
@@ -36,10 +39,14 @@
                 <ol class="algorithms">
                     <%= render @algorithms %>
                 </ol>
+            <% else %>
+                <h3>No Submittted Algorithms</h3>
             <% end %>
+            <% if current_user?(@user) %>
             <div class="col-md-6 col-md-offset-3">
                 <%= button_to "Create new algorithm", "/algorithms/new", :class => "btn btn-primary", :method => :get %>
             </div>
+            <% end %>
         </div>
         <div class="col-md-12">
             <hr/>
@@ -48,6 +55,8 @@
                 <ol class="results">
                     <%= render @results %>
                 </ol>
+            <% else %>
+                <h3>No Public Results</h3>
             <% end %>
         </div>
     </div>
