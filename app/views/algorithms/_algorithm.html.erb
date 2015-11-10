@@ -3,7 +3,7 @@
         <h3><%= link_to algorithm.name, algorithm %></h3>
         <p><b>Description: </b><%= algorithm.description %></p>
         <p><b>Language: </b><%= algorithm.filetype %></p>
-        <p><b>Author: </b><%= algorithm.user.name %></p>
+        <p><b>Author: </b><%= "#{algorithm.user.first_name} #{algorithm.user.last_name}" %></p>
         <%= link_to "Download", "uploads/algorithm/#{algorithm.user_id}/#{algorithm.id}/#{algorithm.filename}", :format => :text %>
     </div>
 </div>

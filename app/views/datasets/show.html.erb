@@ -8,7 +8,7 @@
         <h4>Size:</h4>
         <%= @dataset.width%> x <%= @dataset.height%> x <%= @dataset.frames%>
         <h4>Owner:</h4>
-        <%= @dataset.user.name %>
+        <%= "#{@dataset.user.first_name} #{@dataset.user.last_name}" %>
         <h4>Email:</h4>
         <%= mail_to @dataset.user.email %>
         <h4>Upload date:</h4>
