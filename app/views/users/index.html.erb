@@ -2,7 +2,10 @@
 <ul class="users">
     <% @users.each do |user| %>
         <li>
-            <%= "#{user.first_name} #{user.last_name} <#{user.email}>" %>
+            <%= link_to "#{user.first_name} #{user.last_name}", user %>
+            <% if current_user.admin? && !current_user?(user) %>
+                | <%= link_to "delete", user, method: :delete %>
+            <% end %>
         </li>
     <% end %>
 </ul>
