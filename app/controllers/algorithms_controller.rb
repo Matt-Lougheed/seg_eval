@@ -45,7 +45,7 @@ class AlgorithmsController < ApplicationController
     private
 
     def algorithm_params
-        permitted = params.require(:algorithm).permit(:name, :description, :source_code_url)
+        permitted = params.require(:algorithm).permit(:name, :description, :source_code_url, :programming_language)
         return permitted
     end
 end
