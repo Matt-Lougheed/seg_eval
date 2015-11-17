@@ -65,7 +65,6 @@ class DatasetsController < ApplicationController
 
     def info
         datasets = Dataset.all
-        #datasets.to_json(:only => [:id, :name])
         render :json => datasets.to_json(:only => [:id, :name])
     end
 

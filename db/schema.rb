@@ -11,16 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151110132310) do
+ActiveRecord::Schema.define(version: 20151117105434) do
 
   create_table "algorithms", force: :cascade do |t|
     t.string   "name"
     t.integer  "user_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
     t.text     "description"
     t.string   "filetype"
     t.string   "filename"
+    t.string   "source_code_url"
   end
 
   add_index "algorithms", ["user_id"], name: "index_algorithms_on_user_id"

@@ -11,7 +11,7 @@ class AlgorithmsController < ApplicationController
 
     def create
         @algorithm = current_user.algorithms.build(algorithm_params)
-
+=begin        
         # Validate presence of file
         if algorithm_params[:filename].present?
             @algorithm.filename = algorithm_params[:filename].original_filename.to_s
@@ -29,6 +29,10 @@ class AlgorithmsController < ApplicationController
             end
             flash[:success] = "Success: new algorithm created!"
             redirect_to @algorithm
+=end
+        if @algorithm.save
+            flash[:success] = "Success: new algorithm created!"
+            redirect_to @algorithm
         else
             render 'new'
         end
@@ -41,7 +45,7 @@ class AlgorithmsController < ApplicationController
     private
 
     def algorithm_params
-        permitted = params.require(:algorithm).permit(:name, :description, :filename)
+        permitted = params.require(:algorithm).permit(:name, :description, :source_code_url)
         return permitted
     end
 end
