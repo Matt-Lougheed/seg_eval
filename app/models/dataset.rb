@@ -1,11 +1,12 @@
 class Dataset < ActiveRecord::Base
     belongs_to :user
-    validates :user_id, :name, :description, :image_sequence, :ground_truth, presence: true
+    validates :user_id, :name, :description, :image_sequence, :ground_truth, :config_file, presence: true
     validate :proper_image_sequence_format
+    validate :proper_config_file_format
     validate :proper_image_size, :if => :image_file_exists?
 
     # Write an uploaded image sequence to the specified filename
-    def write_sequence_to_file(uploaded_file, filename)
+    def write_upload_to_file(uploaded_file, filename)
         FileUtils.mkdir_p(dir_path) unless File.directory?(dir_path)
         file_path = Rails.root.join(dir_path, filename)
         File.open(file_path, 'wb') do |file|
@@ -43,7 +44,7 @@ class Dataset < ActiveRecord::Base
     # Create a zip file containing the ground truth and image sequence
     def create_zip
         require 'zip'
-        zip_files = [self.ground_truth, self.image_sequence]
+        zip_files = [self.ground_truth, self.image_sequence, self.config_file]
         zip_filename = Rails.root.join(dir_path, "#{self.name}.zip")
         Zip::File.open(zip_filename, Zip::File::CREATE) do |zipfile|
             zip_files.each do |file|
@@ -60,16 +61,23 @@ class Dataset < ActiveRecord::Base
             errors.add(:image_sequence, "must be in .mha format currently")
         end
     end
+
+    def proper_config_file_format
+        if not config_file =~ /\.xml\z/
+            errors.add(:config_file, "must be in .xml format")
+        end
+    end
     
     def image_file_exists?
-        puts "\n Checking if file exists in image_file_exists?\n"
-        test = File.file?(Rails.root.join(dir_path, image_sequence))
-        puts "\n Result: #{test} \n"
-        return test
+        if image_sequence.nil?
+            return false
+        else
+            test = File.file?(Rails.root.join(dir_path, image_sequence))
+            return test
+        end
     end
 
     def proper_image_size
-        puts "\n Checking for proper file size in proper_image_size\n"
         if ( (File.size(Rails.root.join(dir_path, image_sequence)).to_f / 2**20) > 4.0 )
             errors.add(:image_sequence, "must be smaller than 4 mb")
         end

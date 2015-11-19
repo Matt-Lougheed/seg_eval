@@ -18,24 +18,30 @@ class DatasetsController < ApplicationController
         # Validate presence of original and ground truth images from form and sets the filenames
         if dataset_params[:image_sequence].present?
             @dataset.image_sequence = dataset_params[:image_sequence].original_filename.to_s
+            # Validate that the uploaded file is smaller than the max size
+            if ( (dataset_params[:image_sequence].size / 2**20 > 4.0) )
+                @dataset.errors.add(:image_sequence, "must be smaller than 4 mb")
+            end
         end
         if dataset_params[:ground_truth].present?
             @dataset.ground_truth = dataset_params[:ground_truth].original_filename.to_s
         end
-
-        # Validate that the uploaded file is smaller than the max size
-        if ( (dataset_params[:image_sequence].size / 2**20 > 4.0) )
-            @dataset.errors.add(:image_sequence, "must be smaller than 4 mb")
+        if dataset_params[:config_file].present?
+            @dataset.config_file = dataset_params[:config_file].original_filename.to_s
         end
+
         
         # Save the dataset, then we must write the files and update the dataset
         if @dataset.errors.empty? && @dataset.save
             # Write the dataset to file
-            @dataset.write_sequence_to_file(dataset_params[:image_sequence], @dataset.image_sequence)
+            @dataset.write_upload_to_file(dataset_params[:image_sequence], @dataset.image_sequence)
 
             # Write the ground truth to file
-            @dataset.write_sequence_to_file(dataset_params[:ground_truth], @dataset.ground_truth)
+            @dataset.write_upload_to_file(dataset_params[:ground_truth], @dataset.ground_truth)
 
+            # Write the config file to file
+            @dataset.write_upload_to_file(dataset_params[:config_file], @dataset.config_file)
+            
             # Find the dimensions for the sequence
             @dataset.find_image_dimensions
             
@@ -83,7 +89,6 @@ class DatasetsController < ApplicationController
     private
 
     def dataset_params
-        permitted = params.require(:dataset).permit(:name, :description, :image_sequence, :ground_truth)
-        return permitted
+        permitted = params.require(:dataset).permit(:name, :description, :image_sequence, :ground_truth, :config_file)
     end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151117161125) do
+ActiveRecord::Schema.define(version: 20151119141144) do
 
   create_table "algorithms", force: :cascade do |t|
     t.string   "name"
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(version: 20151117161125) do
     t.integer  "download_num"
     t.string   "frame"
     t.string   "ground_truth"
+    t.string   "config_file"
   end
 
   add_index "datasets", ["user_id"], name: "index_datasets_on_user_id"
