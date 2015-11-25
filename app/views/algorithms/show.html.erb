@@ -1,8 +1,10 @@
 <style type="text/css"><%= Pygments.css %></style>
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
         <h2><%= @algorithm.name %></h2>
         <hr/>
+    </div>
+    <div class="col-md-4">
         <br/>
         <h4>Description:</h4>
         <p><%= @algorithm.description %></p>
@@ -12,5 +14,45 @@
         <p><%= @algorithm.programming_language %>
         <h4>Source code url:</h4>
         <p><%= link_to @algorithm.source_code_url, @algorithm.full_url %>
+    </div>
+    <div class="col-md-8">
+        <h2 class="dataset_heading">Dataset performance</h2>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th class="col-md-3>">Dataset Name</th>
+                    <th class="col-md-3">Hausdorff</th>
+                    <th class="col-md-3">Dice</th>
+                    <th class="col-md-3">Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if not @current_results.blank? %>
+                    <% @current_results.each do |result| %>
+                        <% if result.public == 1 %>
+                            <tr>
+                                <td><%= link_to result.dataset.name, dataset_path(result.dataset) %></td>
+                                <% if result.hausdorff != -1 %>
+                                    <td><%= result.hausdorff %></td>
+                                <% else %>
+                                    <td>N/A</td>
+                                <% end %>
+                                <% if result.dice != -1 %>
+                                    <td><%= result.dice %></td>
+                                <% else %>
+                                    <td>N/A</td>
+                                <% end %>
+                                <td><%= result.created_at %></td>
+                            </tr>
+                        <% end %>
+                    <% end %>
+                <% end %>
+            </tbody>
+        </table>
+        <% if @current_results.blank? %>
+            <div class="col-md-3 col-md-offset-4">
+                <h4>No algorithm results available</h4>
+            </div>
+        <% end %>                
     </div>
 </div>

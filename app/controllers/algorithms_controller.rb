@@ -40,6 +40,7 @@ class AlgorithmsController < ApplicationController
 
     def show
         @algorithm = Algorithm.find(params[:id])
+        @current_results = Result.where(algorithm_id: @algorithm.id)
     end
 
     private
