@@ -4,35 +4,41 @@
         <%= form_for @dataset, :html => {:multipart => true} do |f| %>
             <%= render 'shared/error_messages', object: @dataset %>
             <div class="form-group">
-                <%= f.label :name, class: "col-sm-4 control-label" %>
+                <%= f.label :name, class: "col-sm-4 control-label required" %>
                 <div class="col-sm-8">
                     <%= f.text_field :name, class: 'form-control' %>
                 </div>
             </div>
             <div class="form-group">
-                <%= f.label :description, class: "col-sm-4 control-label" %>
+                <%= f.label :description, class: "col-sm-4 control-label required" %>
                 <div class="col-sm-8">
                     <%= f.text_field :description, class: 'form-control' %>
                 </div>
             </div>
             <div class="form-group">
-                <%= f.label :image_sequence, class: "col-sm-4 control-label" %>
+                <%= f.label :image_sequence, class: "col-sm-4 control-label required" %>
                 <div class="col-sm-8">
                     <%= f.file_field :image_sequence, class: 'form-control' %>
                 </div>
             </div>
             <div class="form-group">
-                <%= f.label :ground_truth, class: "col-sm-4 control-label" %>
+                <%= f.label :config_file, class: "col-sm-4 control-label required" %>
+                <div class="col-sm-8">
+                    <%= f.file_field :config_file, class: 'form-control' %>
+                </div>
+            </div>	    
+            <div class="form-group">
+                <%= f.label :ground_truth, class: "col-sm-4 control-label required" %>
                 <div class="col-sm-8">
                     <%= f.file_field :ground_truth, class: 'form-control' %>
                 </div>
             </div>
             <div class="form-group">
-                <%= f.label :config_file, class: "col-sm-4 control-label" %>
+                <%= f.label :acceptable_segmentation_region, class: "col-sm-4 control-label" %>
                 <div class="col-sm-8">
-                    <%= f.file_field :config_file, class: 'form-control' %>
+                    <%= f.file_field :acceptable_segmentation_region, class: 'form-control' %>
                 </div>
-            </div>            
+            </div>	    
             <%= f.submit "Create new dataset", class: "btn btn-primary" %>
         <% end %>
     </div>

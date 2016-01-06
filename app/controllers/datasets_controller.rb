@@ -29,6 +29,9 @@ class DatasetsController < ApplicationController
         if dataset_params[:config_file].present?
             @dataset.config_file = dataset_params[:config_file].original_filename.to_s
         end
+        if dataset_params[:acceptable_segmentation_region].present?
+          @dataset.acceptable_segmentation_region = dataset_params[:acceptable_segmentation_region].original_filename.to_s
+        end
 
         
         # Save the dataset, then we must write the files and update the dataset
@@ -36,11 +39,15 @@ class DatasetsController < ApplicationController
             # Write the dataset to file
             @dataset.write_upload_to_file(dataset_params[:image_sequence], @dataset.image_sequence)
 
+            # Write the config file to file
+            @dataset.write_upload_to_file(dataset_params[:config_file], @dataset.config_file)            
             # Write the ground truth to file
             @dataset.write_upload_to_file(dataset_params[:ground_truth], @dataset.ground_truth)
 
-            # Write the config file to file
-            @dataset.write_upload_to_file(dataset_params[:config_file], @dataset.config_file)
+            # Write the acceptable segmentation region if it exists
+            if @dataset.acceptable_segmentation_region.present?
+              @dataset.write_upload_to_file(dataset_params[:acceptable_segmentation_region], @dataset.acceptable_segmentation_region)
+            end
             
             # Find the dimensions for the sequence
             @dataset.find_image_dimensions
@@ -89,6 +96,6 @@ class DatasetsController < ApplicationController
     private
 
     def dataset_params
-        permitted = params.require(:dataset).permit(:name, :description, :image_sequence, :ground_truth, :config_file)
+        permitted = params.require(:dataset).permit(:name, :description, :image_sequence, :ground_truth, :config_file, :acceptable_segmentation_region)
     end
 end

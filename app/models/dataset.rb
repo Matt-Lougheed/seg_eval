@@ -45,6 +45,9 @@ class Dataset < ActiveRecord::Base
     def create_zip
         require 'zip'
         zip_files = [self.ground_truth, self.image_sequence, self.config_file]
+        if self.acceptable_segmentation_region.present?
+          zip_files.push(self.acceptable_segmentation_region)
+        end
         zip_filename = Rails.root.join(dir_path, "#{self.name}.zip")
         Zip::File.open(zip_filename, Zip::File::CREATE) do |zipfile|
             zip_files.each do |file|
