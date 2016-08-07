@@ -34,3 +34,4 @@ database.yml
 
 # Ignore public uploads
 /public/uploads
+secrets.yml
